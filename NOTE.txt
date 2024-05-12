@@ -8,3 +8,8 @@
 
 
 Controller -> Service Interface -> ServiceImpl -> Repository + Mappers
+
+After adding in BaseEntity private boolean isDeleted=false;
+    to select only "non-deleted" records for the entities add annotation in class definition:
+
+        @Where(clause = "is_deleted=false")
