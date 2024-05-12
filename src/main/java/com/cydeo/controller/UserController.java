@@ -3,6 +3,7 @@ package com.cydeo.controller;
 import com.cydeo.dto.UserDTO;
 import com.cydeo.service.RoleService;
 import com.cydeo.service.UserService;
+import org.springframework.context.support.BeanDefinitionDsl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,12 +11,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
-    RoleService roleService;
-    UserService userService;
+    private final RoleService roleService;
+    private final UserService userService;
 
     public UserController(RoleService roleService, UserService userService) {
         this.roleService = roleService;
@@ -26,8 +28,8 @@ public class UserController {
     public String createUser(Model model) {
 
         model.addAttribute("user", new UserDTO());
-        model.addAttribute("roles", roleService.findAll());
-        model.addAttribute("users", userService.findAll());
+        model.addAttribute("roles", roleService.listAllRoles());
+        model.addAttribute("users", userService.listAllUsers());
 
         return "/user/create";
     }
@@ -38,13 +40,12 @@ public class UserController {
 
         if (bindingResult.hasErrors()) {
 
-            model.addAttribute("roles", roleService.findAll());
-            model.addAttribute("users", userService.findAll());
+            model.addAttribute("roles", roleService.listAllRoles());
+            model.addAttribute("users", userService.listAllUsers());
 
             return "/user/create";
 
         }
-
         userService.save(user);
         return "redirect:/user/create";
 
@@ -53,10 +54,10 @@ public class UserController {
     @GetMapping("/update/{username}")
     public String editUser(@PathVariable("username") String username, Model model) {
 
-        model.addAttribute("user", userService.findById(username));
-        model.addAttribute("roles", roleService.findAll());
-        model.addAttribute("users", userService.findAll());
-
+        model.addAttribute("user", userService.findByUserNamea(username));
+        model.addAttribute("roles", roleService.listAllRoles());
+        model.addAttribute("users", userService.listAllUsers());
+        System.out.println("DEBUG: ready to display");
         return "/user/update";
 
     }
@@ -66,8 +67,8 @@ public class UserController {
 
         if (bindingResult.hasErrors()) {
 
-            model.addAttribute("roles", roleService.findAll());
-            model.addAttribute("users", userService.findAll());
+            model.addAttribute("roles", roleService.listAllRoles());
+            model.addAttribute("users", userService.listAllUsers());
 
             return "/user/update";
 
@@ -80,7 +81,8 @@ public class UserController {
 
     @GetMapping("/delete/{username}")
     public String deleteUser(@PathVariable("username") String username) {
-        userService.deleteById(username);
+        userService.deleteByUserName(username);
+        System.out.println("DEBUG: " + username + " removed ");
         return "redirect:/user/create";
     }
 
