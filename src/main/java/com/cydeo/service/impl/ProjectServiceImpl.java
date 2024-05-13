@@ -1,6 +1,7 @@
 package com.cydeo.service.impl;
 
 import com.cydeo.dto.ProjectDTO;
+import com.cydeo.dto.UserDTO;
 import com.cydeo.entity.Project;
 import com.cydeo.entity.User;
 import com.cydeo.enums.Status;
@@ -85,5 +86,12 @@ public class ProjectServiceImpl implements ProjectService {
         //save updated object
         projectRepository.save(p);
 
+    }
+
+    @Override
+    public List<ProjectDTO> getCountedListOfProjectDTO(UserDTO manager) {
+
+        return projectRepository.findByAssignedManager(userRepository.findByUserName(manager.getUserName()))
+                .stream().map(projectMapper::convertToDto).collect(Collectors.toList());
     }
 }
