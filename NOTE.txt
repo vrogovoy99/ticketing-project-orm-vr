@@ -9,7 +9,17 @@
 
 Controller -> Service Interface -> ServiceImpl -> Repository + Mappers
 
-After adding in BaseEntity private boolean isDeleted=false;
+2. After adding in BaseEntity private boolean isDeleted=false;
     to select only "non-deleted" records for the entities add annotation in class definition:
 
         @Where(clause = "is_deleted=false")
+
+3. Sequence to add new entity
+
+    3.1. Create Entity class
+    3.2. Create Entity repository
+    3.3. Create Entity mapper (ModelMapper for Entity<>DTO)
+    3.4. Create Entity converter  (map string to DTO object pulling data from database)
+    3.5. In case of circular dependency loop add @Lazy in entity converter constructor Like:
+
+            public ProjectDtoConverter(@Lazy ProjectService projectService) {

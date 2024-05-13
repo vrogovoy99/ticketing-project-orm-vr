@@ -31,6 +31,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO findByUserNamea(String username) {
 //        return null;
         return userMapper.convertToDto(userRepository.findByUserName(username));
+
     }
 
     @Override
@@ -70,5 +71,10 @@ public class UserServiceImpl implements UserService {
         user.setIsDeleted(true);
         userRepository.save(user);
 
+    }
+
+    @Override
+    public List<UserDTO> findManagers() {
+        return userRepository.findManagers().stream().map(userMapper::convertToDto).collect(Collectors.toList());
     }
 }
