@@ -12,4 +12,12 @@ public interface ProjectService {
     List<ProjectDTO> findAll();
 
     void save(ProjectDTO projectDTO);
+
+    void deleteById(String projectcode);
+
+    void complete(String projectcode);
+
+    Object findByProjectCode(String projectcode);
+
+    void update(ProjectDTO project);
 }

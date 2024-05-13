@@ -2,6 +2,7 @@ package com.cydeo.service.impl;
 
 import com.cydeo.dto.ProjectDTO;
 import com.cydeo.entity.Project;
+import com.cydeo.entity.User;
 import com.cydeo.enums.Status;
 import com.cydeo.mapper.ProjectMapper;
 import com.cydeo.repository.ProjectRepository;
@@ -11,7 +12,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
 import java.beans.Transient;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,5 +50,40 @@ public class ProjectServiceImpl implements ProjectService {
         project.setAssignedManager(userRepository.findByUserName(project.getAssignedManager().getUserName()));
 
         projectRepository.save(project);
+    }
+
+    @Override
+    public void deleteById(String projectcode) {
+        Project project = projectRepository.findByProjectCode(projectcode);
+        project.setIsDeleted(true);
+        projectRepository.save(project);
+    }
+
+    @Override
+    public void complete(String projectcode) {
+        Project project = projectRepository.findByProjectCode(projectcode);
+        project.setProjectStatus(Status.COMPLETE);
+        projectRepository.save(project);
+
+    }
+
+    @Override
+    public ProjectDTO findByProjectCode(String projectcode) {
+        return projectMapper.convertToDto(projectRepository.findByProjectCode(projectcode));
+    }
+
+    @Override
+    public void update(ProjectDTO project) {
+        //find database object to be updated
+        Project p = projectRepository.findByProjectCode(project.getProjectCode());
+        //override database object with DTO values
+        p.setProjectName(project.getProjectName());
+        p.setStartDate(project.getStartDate());
+        p.setEndDate(project.getEndDate());
+        p.setProjectDetail(project.getProjectDetail());
+        p.setAssignedManager(userRepository.findByUserName(project.getAssignedManager().getUserName()));
+        //save updated object
+        projectRepository.save(p);
+
     }
 }

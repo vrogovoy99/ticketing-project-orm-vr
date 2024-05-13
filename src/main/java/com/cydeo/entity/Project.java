@@ -5,6 +5,7 @@ import com.cydeo.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -17,6 +18,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Data
 @Table(name = "projects")
+@Where(clause = "is_deleted=false")
 public class Project extends BaseEntity{
 
     private String projectName;
