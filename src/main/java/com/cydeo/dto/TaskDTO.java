@@ -13,7 +13,7 @@ import java.util.UUID;
 @Data
 public class TaskDTO {
 
-    private Long id;
+    private Long tid;
 
     @NotNull
     private ProjectDTO project;
@@ -37,7 +37,7 @@ public class TaskDTO {
         this.taskDetail = taskDetail;
         this.taskStatus = taskStatus;
         this.assignedDate = assignedDate;
-        this.id = UUID.randomUUID().getMostSignificantBits();
+        this.tid = UUID.randomUUID().getMostSignificantBits();
     }
 
 }

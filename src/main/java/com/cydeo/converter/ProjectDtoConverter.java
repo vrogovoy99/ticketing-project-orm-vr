@@ -27,7 +27,7 @@ public class ProjectDtoConverter implements Converter<String, ProjectDTO> {
             return null;
         }
 
-        return projectService.findById(Long.parseLong(source));
+        return (ProjectDTO) projectService.findByProjectCode(source);
 
     }
 

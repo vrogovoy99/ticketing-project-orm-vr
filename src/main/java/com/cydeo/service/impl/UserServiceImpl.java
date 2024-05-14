@@ -75,6 +75,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> findManagers() {
-        return userRepository.findManagers().stream().map(userMapper::convertToDto).collect(Collectors.toList());
+        List<User> userList = userRepository.findManagers();
+        List<UserDTO> userDTOList = userList.stream().map(userMapper::convertToDto).collect(Collectors.toList());
+
+        return userDTOList;
+    }
+
+    @Override
+    public List<UserDTO> findEmployees() {
+        List<User> userList = userRepository.findEmployees();
+        List<UserDTO> userDTOList = userList.stream().map(userMapper::convertToDto).collect(Collectors.toList());
+        return userDTOList;
     }
 }

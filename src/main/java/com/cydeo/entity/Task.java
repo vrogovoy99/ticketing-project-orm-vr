@@ -20,7 +20,7 @@ import java.util.UUID;
 @Where(clause = "is_deleted=false")
 public class Task extends BaseEntity{
 
-
+    private Long tid;
     private String taskSubject;
     private String taskDetail;
     private LocalDate assignedDate;
