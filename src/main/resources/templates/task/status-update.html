@@ -30,7 +30,7 @@
                                 </header>
                                 <div class="panel-body">
                                     <!-- ------------------------FORM START----------------------------- -->
-                                    <form th:action="@{/task/employee/update/{id}(id=${task.id})}" method="post"
+                                    <form th:action="@{/task/employee/update/{id}(id=${task.tid})}" method="post"
                                           th:object="${task}">
                                         <div class="row">
                                             <div class="col-sm-6 col-md-6 col-xs-12">
@@ -175,7 +175,7 @@
                                                 <td th:text="${#temporals.format(task.assignedDate, 'MM/dd/yyyy')}"></td>
                                                 <td th:text="${task.taskStatus.value}"></td>
                                                 <td>
-                                                    <a th:href="@{/task/employee/edit/{id}(id=${task.id})}"
+                                                    <a th:href="@{/task/employee/edit/{id}(id=${task.tid})}"
                                                        class="btn btn-warning rounded-0">Update</a>
                                                 </td>
                                             </tr>

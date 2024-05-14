@@ -48,7 +48,7 @@
                                                 <td th:text="${#temporals.format(task.assignedDate, 'MM/dd/yyyy')}"></td>
                                                 <td th:text="${task.taskStatus.value}"></td>
                                                 <td>
-                                                    <a th:href="@{/task/employee/edit/{id}(id=${task.id})}"
+                                                    <a th:href="@{/task/employee/edit/{id}(id=${task.tid})}"
                                                        class="btn btn-warning rounded-0">Update</a>
                                                 </td>
                                             </tr>
