@@ -14,3 +14,8 @@ select 'Project One', 'P01', 'First Project', 'OPEN', '2004-01-06', '2024-05-12'
 
 insert into projects(project_name, project_code, project_detail, project_status, start_date, end_date, assigned_manager_id, complete_task_counts, unfinished_task_counts, is_deleted)
 select 'Project Two', 'P02', 'Second Project', 'OPEN', '2007-05-08', '2024-05-12', id, 0, 0, false from users where first_name='Suzan';
+
+
+insert into tasks (assigned_date, task_detail, task_status, task_subject, tid, assigned_employee_id, project_id, is_deleted)
+values (now(), 'Task One Detail', 'OPEN', 'Task One', 1, 3, 2, false),
+       (now(), 'Task Two Detail', 'OPEN', 'Task Two', 2, 3, 2, false);

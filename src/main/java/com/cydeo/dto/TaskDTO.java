@@ -16,10 +16,10 @@ public class TaskDTO {
     private Long tid;
 
     @NotNull
-    private ProjectDTO project;
+    public ProjectDTO project;
 
     @NotNull
-    private UserDTO assignedEmployee;
+    public UserDTO assignedEmployee;
 
     @NotBlank
     private String taskSubject;
