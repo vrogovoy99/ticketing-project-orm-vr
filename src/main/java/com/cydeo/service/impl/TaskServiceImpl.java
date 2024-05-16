@@ -53,11 +53,11 @@ public class TaskServiceImpl implements TaskService {
             task1.setAssignedDate(LocalDate.now());
         }
 
-        if (task1.getTid() == null) {
-            task1.setTid(UUID.randomUUID().getMostSignificantBits());
-        }
-
-        task1.setProject(projectRepository.findByProjectCode(task1.getProject().getProjectCode()));
+//        if (task1.getTid() == null) {
+//            task1.setTid(UUID.randomUUID().getMostSignificantBits());
+//        }
+//after addind id field in projectDTO below conversion is not needed, since mapper transfers is valuses between entity and dto
+//        task1.setProject(projectRepository.findByProjectCode(task1.getProject().getProjectCode()));
         task1.setAssignedEmployee(userRepository.findByUserName(task1.getAssignedEmployee().getUserName()));
         taskRepository.save(task1);
 
@@ -68,16 +68,17 @@ public class TaskServiceImpl implements TaskService {
     public TaskDTO findById(long l) {
         return taskMapper.convertToDto(taskRepository.findById(l).get());
     }
+//
+//    @Override
+//    public TaskDTO findByTId(long l) {
+//        return taskMapper.convertToDto(taskRepository.findByTid(l));
+//    }
 
     @Override
-    public TaskDTO findByTId(long l) {
-        return taskMapper.convertToDto(taskRepository.findByTid(l));
-    }
-
-    @Override
-    public void deleteById(Long tid) {
+    public void deleteById(Long id) {
         //get task from db
-        Task task = taskRepository.findByTid(tid);
+//        Task task = taskRepository.findByTid(tid);
+        Task task = taskRepository.findById(id).get();
         //change is_deleted
         task.setIsDeleted(true);
         //save task
@@ -86,7 +87,8 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void update(TaskDTO taskDTO) {
-        Task taskEntity = taskRepository.findByTid(taskDTO.getTid());
+//        Task taskEntity = taskRepository.findByTid(taskDTO.getTid());
+        Task taskEntity = taskRepository.findById(taskDTO.getId()).get();
 
         taskDTO.setTaskStatus(taskEntity.getTaskStatus());
         taskDTO.setAssignedDate(taskEntity.getAssignedDate());
@@ -105,15 +107,13 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<TaskDTO> findAllTasksByStatusIsNot(Status status) {
 
-        List<Task> taskList = taskRepository.findByTaskStatusIsNot(status);
-        List<TaskDTO> taskDTOList = taskList.stream().map(taskMapper::convertToDto).collect(Collectors.toList());
-        return taskDTOList;
+        return taskRepository.findByTaskStatusIsNot(status).stream().map(taskMapper::convertToDto).collect(Collectors.toList());
 
     }
 
     @Override
     public void updateStatus(TaskDTO taskDTO) {
-        Task taskEntity = taskRepository.findByTid(taskDTO.getTid());
+        Task taskEntity = taskRepository.findById(taskDTO.getId()).get();
         taskEntity.setTaskStatus(taskDTO.getTaskStatus());
         taskRepository.save(taskEntity);
     }

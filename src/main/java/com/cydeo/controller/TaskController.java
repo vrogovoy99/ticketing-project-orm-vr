@@ -98,7 +98,7 @@ public class TaskController {
 
         }
         //if tid not set in task- update it.
-        task.setTid(id);
+        task.setId(id);
 
         taskService.update(task);
         return "redirect:/task/create";
@@ -113,7 +113,7 @@ public class TaskController {
     @GetMapping("/employee/edit/{id}")
     public String employeeEditTask(@PathVariable("id") Long id, Model model) {
 
-        model.addAttribute("task", taskService.findByTId(id));
+        model.addAttribute("task", taskService.findById(id));
         model.addAttribute("tasks", taskService.findAllTasksByStatusIsNot(Status.COMPLETE));
         model.addAttribute("statuses", Status.values());
 
@@ -132,7 +132,7 @@ public class TaskController {
             return "/task/status-update";
 
         }
-        task.setTid(id);
+        task.setId(id);
         taskService.updateStatus(task);
         return "redirect:/task/employee/pending-tasks";
 

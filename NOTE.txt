@@ -20,7 +20,7 @@ Controller -> Service Interface -> ServiceImpl -> Repository + Mappers
     3.2. Create Entity service
     3.3. Create Entity repository
     3.4. Create Entity mapper (ModelMapper for Entity<>DTO)
-    3.5. Create Entity converter  (map string to DTO object pulling data from database)
+    3.5. Create Entity converter  (map string to DTO object pulling data from database - used in case of dropdowns to convert passed id into object)
     3.6. In case of circular dependency loop add @Lazy in entity converter constructor Like:
 
             public ProjectDtoConverter(@Lazy ProjectService projectService) {

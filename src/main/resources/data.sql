@@ -22,7 +22,11 @@ select 'Project Two', 'P02', 'Second Project', 'OPEN', '2007-05-08', '2024-05-12
                     '2024-05-01 00:00:00.000000', 1 from users where first_name='Suzan';
 
 
-insert into tasks (assigned_date, task_detail, task_status, task_subject, tid, assigned_employee_id, project_id, is_deleted,
+insert into tasks (assigned_date, task_detail, task_status, task_subject,  assigned_employee_id, project_id, is_deleted,
                    insert_date_time, insert_user_id)
-values (now(), 'Task One Detail', 'OPEN', 'Task One', 1, 3, 2, false, '2024-05-01 00:00:00.000000', 1),
-       (now(), 'Task Two Detail', 'OPEN', 'Task Two', 2, 3, 2, false, '2024-05-01 00:00:00.000000', 1);
+values (now(), 'Task One Detail', 'OPEN', 'Task One', 3, 2, false, '2024-05-01 00:00:00.000000', 1),
+       (now(), 'Task Two Detail', 'OPEN', 'Task Two', 3, 2, false, '2024-05-01 00:00:00.000000', 1);
+-- insert into tasks (assigned_date, task_detail, task_status, task_subject, tid, assigned_employee_id, project_id, is_deleted,
+--                    insert_date_time, insert_user_id)
+-- values (now(), 'Task One Detail', 'OPEN', 'Task One', 1, 3, 2, false, '2024-05-01 00:00:00.000000', 1),
+--        (now(), 'Task Two Detail', 'OPEN', 'Task Two', 2, 3, 2, false, '2024-05-01 00:00:00.000000', 1);

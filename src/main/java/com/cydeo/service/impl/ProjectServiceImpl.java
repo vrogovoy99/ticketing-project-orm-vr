@@ -84,12 +84,6 @@ public class ProjectServiceImpl implements ProjectService {
         p.setProjectDetail(project.getProjectDetail());
         p.setAssignedManager(userRepository.findByUserName(project.getAssignedManager().getUserName()));
         projectRepository.save(p);
-//        Project p2 = projectMapper.convertToEntity(project);
-//        p2.setId(p.getId());
-//        p2.setProjectStatus(p.getProjectStatus());
-//
-//        projectRepository.save(p2);
-
     }
 
     @Override

@@ -14,7 +14,7 @@ public interface TaskService {
 
     TaskDTO findById(long l);
 
-    TaskDTO findByTId(long l);
+//    TaskDTO findByTId(long l);
 
     void deleteById(Long tid);
 
