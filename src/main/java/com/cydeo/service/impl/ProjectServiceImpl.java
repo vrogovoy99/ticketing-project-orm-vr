@@ -7,8 +7,10 @@ import com.cydeo.entity.User;
 import com.cydeo.enums.Status;
 import com.cydeo.mapper.ProjectMapper;
 import com.cydeo.repository.ProjectRepository;
+import com.cydeo.repository.TaskRepository;
 import com.cydeo.repository.UserRepository;
 import com.cydeo.service.ProjectService;
+import com.cydeo.service.TaskService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,12 +28,15 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
     private final ProjectMapper projectMapper;
     private final UserRepository userRepository;
+    private final TaskService taskService;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository, ProjectMapper projectMapper, UserRepository userRepository) {
+    public ProjectServiceImpl(ProjectRepository projectRepository, ProjectMapper projectMapper, UserRepository userRepository, TaskService taskService) {
         this.projectRepository = projectRepository;
         this.projectMapper = projectMapper;
         this.userRepository = userRepository;
+        this.taskService = taskService;
     }
+
 
     @Override
     public ProjectDTO findById(Long id) {
@@ -56,8 +61,17 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void deleteById(String projectcode) {
         Project project = projectRepository.findByProjectCode(projectcode);
-        project.setIsDeleted(true);
-        projectRepository.save(project);
+        //if project has no tasks then delete it.
+
+         if (taskService.totalNonCompletedTasks(project.getProjectCode()) == 0) {
+            //remove completed tasks
+             taskService.deleteByProjectCode(project.getProjectCode());
+             //"delete" project
+             project.setIsDeleted(true);
+             projectRepository.save(project);
+         }
+        System.out.println("Project can not be deleted, since it has non-completed tasks");
+
     }
 
     @Override
@@ -88,8 +102,17 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectDTO> getCountedListOfProjectDTO(UserDTO manager) {
+//        List<ProjectDTO> projectDTOList=projectRepository.findByAssignedManager(userRepository.findByUserName(manager.getUserName()))
+//                .stream().map(projectMapper::convertToDto).collect(Collectors.toList());
 
-        return projectRepository.findByAssignedManager(userRepository.findByUserName(manager.getUserName()))
-                .stream().map(projectMapper::convertToDto).collect(Collectors.toList());
+        List<ProjectDTO> projectDTOList=projectRepository.findByAssignedManager(userRepository.findByUserName(manager.getUserName()))
+                .stream().map(entity -> {
+                    ProjectDTO dto = projectMapper.convertToDto(entity);
+                    dto.setCompleteTaskCounts(taskService.totalNonCompletedTasks(dto.getProjectCode()));
+                    dto.setUnfinishedTaskCounts(taskService.totalCompletedTasks(dto.getProjectCode()));
+                    return dto;
+                }).collect(Collectors.toList());
+
+        return projectDTOList;
     }
 }

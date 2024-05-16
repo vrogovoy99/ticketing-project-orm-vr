@@ -125,4 +125,19 @@ public class TaskServiceImpl implements TaskService {
 
         return taskRepository.findByTaskStatus(status).stream().map(taskMapper::convertToDto).collect(Collectors.toList());
     }
+
+    @Override
+    public int totalNonCompletedTasks(String projectCode) {
+        return taskRepository.totalNonCompletedTasks(projectCode);
+    }
+
+    @Override
+    public int totalCompletedTasks(String projectCode) {
+        return taskRepository.totalCompletedTasks(projectCode);
+    }
+
+    @Override
+    public void deleteByProjectCode(String projectCode) {
+        taskRepository.deleteByProjectCode(projectCode);
+    }
 }
