@@ -16,6 +16,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -65,8 +66,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskDTO findById(long l) {
-        return taskMapper.convertToDto(taskRepository.findById(l).get());
+    public TaskDTO findById(long id) {
+        Optional<Task> task = taskRepository.findById(id);
+        if (task.isPresent()){
+                return taskMapper.convertToDto(task.get());
+            }
+        return null;
     }
 //
 //    @Override
@@ -96,8 +101,8 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskMapper.convertToEntity(taskDTO);
         //reset reference objects ids
         task.setAssignedEmployee(userRepository.findByUserName(taskDTO.getAssignedEmployee().getUserName()));
-        task.setProject(projectRepository.findByProjectCode(taskDTO.getProject().getProjectCode()));
-        task.setId(taskEntity.getId());
+//        task.setProject(projectRepository.findByProjectCode(taskDTO.getProject().getProjectCode()));
+//        task.setId(taskEntity.getId());
 
         taskRepository.save(task);
 
