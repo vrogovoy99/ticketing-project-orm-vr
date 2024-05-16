@@ -20,6 +20,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static org.springframework.util.ClassUtils.isPresent;
+
 @Service
 public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
@@ -92,21 +94,16 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void update(TaskDTO taskDTO) {
-//        Task taskEntity = taskRepository.findByTid(taskDTO.getTid());
-        Task taskEntity = taskRepository.findById(taskDTO.getId()).get();
-
-        taskDTO.setTaskStatus(taskEntity.getTaskStatus());
-        taskDTO.setAssignedDate(taskEntity.getAssignedDate());
-
-        Task task = taskMapper.convertToEntity(taskDTO);
-        //reset reference objects ids
-        task.setAssignedEmployee(userRepository.findByUserName(taskDTO.getAssignedEmployee().getUserName()));
-//        task.setProject(projectRepository.findByProjectCode(taskDTO.getProject().getProjectCode()));
-//        task.setId(taskEntity.getId());
-
-        taskRepository.save(task);
+        Optional<Task> taskEntity = taskRepository.findById(taskDTO.getId());
+        Task taskConvert = taskMapper.convertToEntity(taskDTO);
 
 
+        if (taskEntity.isPresent()){
+            taskConvert.setTaskStatus(taskEntity.get().getTaskStatus());
+            taskConvert.setAssignedDate(taskEntity.get().getAssignedDate());
+            taskConvert.setAssignedEmployee(userRepository.findByUserName(taskDTO.getAssignedEmployee().getUserName()));
+            taskRepository.save(taskConvert);
+        }
     }
 
     @Override
