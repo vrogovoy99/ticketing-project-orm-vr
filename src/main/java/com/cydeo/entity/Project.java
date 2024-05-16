@@ -33,7 +33,7 @@ public class Project extends BaseEntity{
     private Status projectStatus=Status.OPEN;
 
 //    @ManyToOne(cascade = CascadeType.ALL)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User assignedManager;
 
 
