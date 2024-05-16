@@ -98,7 +98,7 @@ public class ProjectController {
     public String getProjectByManager(Model model) {
 
 //        UserDTO manager = userService.findById("ssmith");
-        UserDTO manager = userService.findByUserNamea("ssmith");
+        UserDTO manager = userService.findByUserNamea("ssmith@cydeo.com");
 
         List<ProjectDTO> projects = projectService.getCountedListOfProjectDTO(manager);
 
