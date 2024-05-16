@@ -83,8 +83,12 @@ public class ProjectServiceImpl implements ProjectService {
         p.setEndDate(project.getEndDate());
         p.setProjectDetail(project.getProjectDetail());
         p.setAssignedManager(userRepository.findByUserName(project.getAssignedManager().getUserName()));
-        //save updated object
         projectRepository.save(p);
+//        Project p2 = projectMapper.convertToEntity(project);
+//        p2.setId(p.getId());
+//        p2.setProjectStatus(p.getProjectStatus());
+//
+//        projectRepository.save(p2);
 
     }
 
