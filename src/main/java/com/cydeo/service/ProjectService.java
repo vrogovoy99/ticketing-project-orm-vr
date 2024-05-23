@@ -1,26 +1,20 @@
 package com.cydeo.service;
 
 import com.cydeo.dto.ProjectDTO;
-import com.cydeo.dto.UserDTO;
-import org.springframework.stereotype.Service;
+import com.cydeo.entity.User;
 
 import java.util.List;
 
-@Service
 public interface ProjectService {
-    ProjectDTO findById(Long id);
 
-    List<ProjectDTO> findAll();
+    ProjectDTO getByProjectCode(String code);
+    List<ProjectDTO> listAllProjects();
+    void save(ProjectDTO dto);
+    void update(ProjectDTO dto);
+    void delete(String code);
+    void complete(String projectCode);
 
-    void save(ProjectDTO projectDTO);
+    List<ProjectDTO> listAllProjectDetails();
 
-    void deleteById(String projectcode);
-
-    void complete(String projectcode);
-
-    Object findByProjectCode(String projectcode);
-
-    void update(ProjectDTO project);
-
-    List<ProjectDTO> getCountedListOfProjectDTO(UserDTO manager);
+    List<ProjectDTO> readAllByAssignedManager(User assignedManager);
 }

@@ -1,34 +1,32 @@
 package com.cydeo.service;
 
-import com.cydeo.dto.RoleDTO;
+import com.cydeo.dto.ProjectDTO;
 import com.cydeo.dto.TaskDTO;
-import com.cydeo.entity.Task;
+import com.cydeo.entity.User;
 import com.cydeo.enums.Status;
 
 import java.util.List;
 
 public interface TaskService {
-    List<TaskDTO> findAll();
 
-    void save(TaskDTO task);
+    TaskDTO findById(Long id);
+    List<TaskDTO> listAllTasks();
+    void save(TaskDTO dto);
+    void update(TaskDTO dto);
+    void delete(Long id);
+    int totalNonCompletedTask(String projectCode);
+    int totalCompletedTask(String projectCode);
 
-    TaskDTO findById(long l);
+    void deleteByProject(ProjectDTO project);
 
-//    TaskDTO findByTId(long l);
+    void completeByProject(ProjectDTO project);
 
-    void deleteById(Long tid);
-
-    void update(TaskDTO task);
-
-    List<TaskDTO> findAllTasksByStatusIsNot(Status status);
+    List<TaskDTO> listAllTasksByStatusIsNot(Status status);
 
     void updateStatus(TaskDTO task);
 
-    List<TaskDTO> findAllTasksByStatus(Status status);
+    List<TaskDTO> listAllTasksByStatus(Status status);
 
-    int totalNonCompletedTasks(String projectCode);
+    List<TaskDTO> readAllByAssignedEmployee(User assignedEmployee);
 
-    int totalCompletedTasks(String projectCode);
-
-    void deleteByProjectCode(String projectCode);
 }

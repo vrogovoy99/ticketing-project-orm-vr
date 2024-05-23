@@ -24,6 +24,9 @@ Controller -> Service Interface -> ServiceImpl -> Repository + Mappers
     3.6. In case of circular dependency loop add @Lazy in entity converter constructor Like:
 
             public ProjectDtoConverter(@Lazy ProjectService projectService) {
+            }
+
+            @Lazy goes into constructor to manifest any dependant class as Lazy
 
 4. create automatic triggers to populate data (BaseEntity for update/insert fields)
 

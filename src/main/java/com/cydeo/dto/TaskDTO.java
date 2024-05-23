@@ -16,10 +16,10 @@ public class TaskDTO {
     private Long id;
 
     @NotNull
-    public ProjectDTO project;
+    private ProjectDTO project;
 
     @NotNull
-    public UserDTO assignedEmployee;
+    private UserDTO assignedEmployee;
 
     @NotBlank
     private String taskSubject;
@@ -37,7 +37,7 @@ public class TaskDTO {
         this.taskDetail = taskDetail;
         this.taskStatus = taskStatus;
         this.assignedDate = assignedDate;
-//        this.tid = UUID.randomUUID().getMostSignificantBits();
+        this.id = UUID.randomUUID().getMostSignificantBits();
     }
 
 }

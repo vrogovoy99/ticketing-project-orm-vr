@@ -1,41 +1,42 @@
 package com.cydeo.entity;
 
-import com.cydeo.dto.UserDTO;
+
 import com.cydeo.enums.Status;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Where;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
-@Data
 @Table(name = "projects")
+@NoArgsConstructor
+@Getter
+@Setter
 @Where(clause = "is_deleted=false")
-public class Project extends BaseEntity{
+public class Project extends BaseEntity {
 
-    private String projectName;
     @Column(unique = true)
     private String projectCode;
+
+    private String projectName;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "manager_id")
+    private User assignedManager;
+
+    @Column(columnDefinition = "DATE")
     private LocalDate startDate;
+
+    @Column(columnDefinition = "DATE")
     private LocalDate endDate;
+
     private String projectDetail;
-    private int completeTaskCounts;
-    private int unfinishedTaskCounts;
 
     @Enumerated(EnumType.STRING)
-    private Status projectStatus=Status.OPEN;
-
-//    @ManyToOne(cascade = CascadeType.ALL)
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User assignedManager;
+    private Status projectStatus;
 
 
 }

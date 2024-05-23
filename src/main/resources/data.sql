@@ -1,32 +1,41 @@
-INSERT INTO roles(description, is_deleted, insert_date_time, insert_user_id) VALUES ('Admin', false, '2024-05-01 00:00:00.000000', 1);
-INSERT INTO roles(description, is_deleted, insert_date_time, insert_user_id) VALUES ('Manager', false, '2024-05-01 00:00:00.000000', 1);
-INSERT INTO roles(description, is_deleted, insert_date_time, insert_user_id) VALUES ('Employee', false, '2024-05-01 00:00:00.000000', 1);
-
-INSERT INTO users(first_name, last_name, user_name, pass_word, enabled, phone, role_id, gender, is_deleted, insert_date_time, insert_user_id)
-VALUES ('John', 'Smith', 'jsmith@cydeo.com', 'arr', true, '2125930233', 1, 'MALE', false, '2024-05-01 00:00:00.000000', 1),
-       ('Suzan', 'Smith', 'ssmith@cydeo.com', 'orr', true, '2125930234', 2, 'FEMALE', false, '2024-05-01 00:00:00.000000', 1),
-       ('Jonny', 'Smith', 'jsmithjr@cydeo.com', 'irr', true, '2125930235', 3, 'MALE', false, '2024-05-01 00:00:00.000000', 1),
-       ('Suzan2', 'Smith', 's2smith@cydeo.com', 'orr', true, '2125930234', 2, 'FEMALE', false, '2024-05-01 00:00:00.000000', 1),
-       ('Jonny2', 'Smith', 'j2smithjr@cydeo.com', 'irr', true, '2125930235', 3, 'MALE', false, '2024-05-01 00:00:00.000000', 1);
-
-insert into projects(project_name, project_code, project_detail, project_status,
-                     start_date, end_date, assigned_manager_id, complete_task_counts, unfinished_task_counts, is_deleted,
-                     insert_date_time, insert_user_id)
-select 'Project One', 'P01', 'First Project', 'OPEN',
-                    '2004-01-06', '2024-05-12', id, 0, 0, false,
-                    '2024-05-01 00:00:00.000000', 1 from users where first_name='Suzan';
-
-insert into projects(project_name, project_code, project_detail, project_status, start_date, end_date, assigned_manager_id, complete_task_counts, unfinished_task_counts, is_deleted,
-                     insert_date_time, insert_user_id)
-select 'Project Two', 'P02', 'Second Project', 'OPEN', '2007-05-08', '2024-05-12', id, 0, 0, false,
-                    '2024-05-01 00:00:00.000000', 1 from users where first_name='Suzan';
+INSERT INTO roles(insert_date_time, insert_user_id, is_deleted, last_update_date_time, last_update_user_id, description)
+VALUES ('2022-01-05 00:00:00', 1, false, '2022-01-05 00:00:00', 1, 'Admin'),
+       ('2022-01-05 00:00:00', 1, false, '2022-01-05 00:00:00', 1, 'Manager'),
+       ('2022-01-05 00:00:00', 1, false, '2022-01-05 00:00:00', 1, 'Employee');
 
 
-insert into tasks (assigned_date, task_detail, task_status, task_subject,  assigned_employee_id, project_id, is_deleted,
-                   insert_date_time, insert_user_id)
-values (now(), 'Task One Detail', 'OPEN', 'Task One', 3, 2, false, '2024-05-01 00:00:00.000000', 1),
-       (now(), 'Task Two Detail', 'OPEN', 'Task Two', 3, 2, false, '2024-05-01 00:00:00.000000', 1);
--- insert into tasks (assigned_date, task_detail, task_status, task_subject, tid, assigned_employee_id, project_id, is_deleted,
---                    insert_date_time, insert_user_id)
--- values (now(), 'Task One Detail', 'OPEN', 'Task One', 1, 3, 2, false, '2024-05-01 00:00:00.000000', 1),
---        (now(), 'Task Two Detail', 'OPEN', 'Task Two', 2, 3, 2, false, '2024-05-01 00:00:00.000000', 1);
+INSERT INTO users(insert_date_time, insert_user_id, is_deleted, last_update_date_time, last_update_user_id, enabled,
+                  first_name, last_name, user_name, gender, phone, role_id)
+VALUES ('2022-01-05 00:00:00', 1, false, '2022-01-05 00:00:00', 1, true, 'admin', 'admin', 'admin@admin.com', 'MALE', '0000000000', 1),
+       ('2022-01-05 00:00:00', 1, false, '2022-01-05 00:00:00', 1, true, 'Harold', 'Finch', 'harold@manager.com', 'MALE', '0123456789', 2),
+       ('2022-01-05 00:00:00', 1, false, '2022-01-05 00:00:00', 1, true, 'Samantha', 'Groves', 'samantha@manager.com', 'MALE', '9876543210', 2),
+       ('2022-01-05 00:00:00', 1, false, '2022-01-05 00:00:00', 1, true, 'John', 'Reese', 'john@employee.com', 'MALE', '7894561230', 3),
+       ('2022-01-05 00:00:00', 1, false, '2022-01-05 00:00:00', 1, true, 'Sameen', 'Shaw', 'sameen@employee.com', 'MALE', '0321654987', 3),
+       ('2022-01-05 00:00:00', 1, false, '2022-01-05 00:00:00', 1, true, 'Grace', 'Hendricks', 'grace@employee.com', 'MALE', '7410258963', 3),
+       ('2022-01-05 00:00:00', 1, false, '2022-01-05 00:00:00', 1, true, 'Lionel', 'Fusco', 'lionel@employee.com', 'MALE', '3698520147', 3);
+
+
+INSERT INTO projects(insert_date_time, insert_user_id, is_deleted, last_update_date_time, last_update_user_id, project_code, project_name,
+                     project_detail, project_status, start_date, end_date, manager_id)
+VALUES ('2022-01-05 00:00:00', 2, false, '2022-01-05 00:00:00', 2, 'SP00', 'Spring Core', 'Spring Core Project', 'OPEN', '2022-01-05', '2022-06-12', 2),
+       ('2022-01-05 00:00:00', 2, false, '2022-01-05 00:00:00', 2, 'SP01', 'Spring Boot', 'Spring Boot Project', 'IN_PROGRESS', '2022-01-05', '2022-06-12', 2),
+       ('2022-01-05 00:00:00', 3, false, '2022-01-05 00:00:00', 3, 'SP02', 'Spring MVC', 'Spring MVC Project', 'IN_PROGRESS', '2022-01-05', '2022-06-12', 3),
+       ('2022-01-05 00:00:00', 3, false, '2022-01-05 00:00:00', 3, 'SP03', 'Spring Data', 'Spring Data Project', 'OPEN', '2022-01-05', '2022-06-12', 3);
+
+INSERT INTO tasks(insert_date_time, insert_user_id, is_deleted, last_update_date_time, last_update_user_id, task_subject, task_detail, task_status, assigned_date, project_id, assigned_employee_id)
+VALUES ('2022-01-05 00:00:00', 2, false, '2022-01-05 00:00:00', 2, 'Dependency Injection', 'Injecting dependencies', 'OPEN', '2022-01-05', 1, 4),
+       ('2022-01-05 00:00:00', 2, false, '2022-01-05 00:00:00', 2, '@SpringBootApplication', 'Adding @SpringBootApplication annotation', 'IN_PROGRESS', '2022-01-05', 1, 4),
+       ('2022-01-05 00:00:00', 2, false, '2022-01-05 00:00:00', 2, 'Controller', 'Creating controllers', 'COMPLETE', '2022-01-05', 1, 4),
+       ('2022-01-05 00:00:00', 2, false, '2022-01-05 00:00:00', 2, 'Entity', 'Creating entities', 'OPEN', '2022-01-05', 1, 4),
+       ('2022-01-05 00:00:00', 2, false, '2022-01-05 00:00:00', 2, 'Dependency Injection', 'Injecting dependencies', 'OPEN', '2022-01-05', 2, 5),
+       ('2022-01-05 00:00:00', 2, false, '2022-01-05 00:00:00', 2, '@SpringBootApplication', 'Adding @SpringBootApplication annotation', 'COMPLETE', '2022-01-05', 2, 5),
+       ('2022-01-05 00:00:00', 2, false, '2022-01-05 00:00:00', 2, 'Controller', 'Creating controllers', 'IN_PROGRESS', '2022-01-05', 2, 5),
+       ('2022-01-05 00:00:00', 2, false, '2022-01-05 00:00:00', 2, 'Entity', 'Creating entities', 'COMPLETE', '2022-01-05', 2, 5),
+       ('2022-01-05 00:00:00', 3, false, '2022-01-05 00:00:00', 3, 'Dependency Injection', 'Injecting dependencies', 'COMPLETE', '2022-01-05', 3, 6),
+       ('2022-01-05 00:00:00', 3, false, '2022-01-05 00:00:00', 3, '@SpringBootApplication', 'Adding @SpringBootApplication annotation', 'COMPLETE', '2022-01-05', 3, 6),
+       ('2022-01-05 00:00:00', 3, false, '2022-01-05 00:00:00', 3, 'Controller', 'Creating controllers', 'IN_PROGRESS', '2022-01-05', 3, 6),
+       ('2022-01-05 00:00:00', 3, false, '2022-01-05 00:00:00', 3, 'Entity', 'Creating entities', 'COMPLETE', '2022-01-05', 3, 6),
+       ('2022-01-05 00:00:00', 3, false, '2022-01-05 00:00:00', 3, 'Dependency Injection', 'Injecting dependencies', 'COMPLETE', '2022-01-05', 4, 7),
+       ('2022-01-05 00:00:00', 3, false, '2022-01-05 00:00:00', 3, '@SpringBootApplication', 'Adding @SpringBootApplication annotation', 'COMPLETE', '2022-01-05', 4, 7),
+       ('2022-01-05 00:00:00', 3, false, '2022-01-05 00:00:00', 3, 'Controller', 'Creating controllers', 'COMPLETE', '2022-01-05', 4, 7),
+       ('2022-01-05 00:00:00', 3, false, '2022-01-05 00:00:00', 3, 'Entity', 'Creating entities', 'COMPLETE', '2022-01-05', 4, 7);

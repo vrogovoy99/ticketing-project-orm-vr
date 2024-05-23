@@ -1,90 +1,112 @@
 package com.cydeo.service.impl;
 
+import com.cydeo.dto.ProjectDTO;
+import com.cydeo.dto.TaskDTO;
 import com.cydeo.dto.UserDTO;
+import com.cydeo.entity.Project;
+import com.cydeo.entity.Task;
 import com.cydeo.entity.User;
 import com.cydeo.mapper.UserMapper;
 import com.cydeo.repository.UserRepository;
+import com.cydeo.service.ProjectService;
+import com.cydeo.service.TaskService;
 import com.cydeo.service.UserService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final ProjectService projectService;
+    private final TaskService taskService;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, @Lazy ProjectService projectService, TaskService taskService) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.projectService = projectService;
+        this.taskService = taskService;
     }
 
     @Override
     public List<UserDTO> listAllUsers() {
-        //
-        return userRepository.findAll(Sort.by("firstName")).stream().map(userMapper::convertToDto).collect(Collectors.toList());
-    }
 
-    @Override
-    public UserDTO findByUserNamea(String username) {
-//        return null;
-        return userMapper.convertToDto(userRepository.findByUserName(username));
+        List<User> userList = userRepository.findAll(Sort.by("firstName"));
+        return userList.stream().map(userMapper::convertToDTO).collect(Collectors.toList());
 
     }
 
     @Override
-    public UserDTO findById(Long id) {
-        return null;
+    public UserDTO findByUserName(String username) {
+        User user = userRepository.findByUserName(username);
+        return userMapper.convertToDTO(user);
     }
 
     @Override
-    public void save(UserDTO userDTO) {
-        userRepository.save(userMapper.convertToEntity(userDTO));
+    public void save(UserDTO dto) {
+
+        userRepository.save(userMapper.convertToEntity(dto));
     }
 
     @Override
-    public UserDTO update(UserDTO userDTO) {
-//        userRepository.save(userMapper.convertToEntity(userDTO));
+    public UserDTO update(UserDTO dto) {
 
-        //find current user id
-        User user = userRepository.findByUserName(userDTO.getUserName());
-        //convert dto
-        User convertedUser = userMapper.convertToEntity(userDTO);
+       //Find current user
+        User user = userRepository.findByUserName(dto.getUserName());
+        //Map updated user dto to entity object
+        User convertedUser = userMapper.convertToEntity(dto);
+        //set id to converted object
         convertedUser.setId(user.getId());
+        //save updated user
         userRepository.save(convertedUser);
 
-        return userDTO;
+        return findByUserName(dto.getUserName());
     }
 
     @Override
-    public void deleteByUserName(String userName) {
-//        userRepository.deleteById(userRepository.findByUserName(userName).getId());
-        userRepository.deleteByUserName(userName);
-    }
-
-    @Override
-    public void delete(String userName) {
-        //setting is_deleted=true
-        User user = userRepository.findByUserName(userName);
-        user.setIsDeleted(true);
-        userRepository.save(user);
+    public void deleteByUserName(String username) {
+        userRepository.deleteByUserName(username);
 
     }
 
     @Override
-    public List<UserDTO> findManagers() {
-        List<User> userList = userRepository.findManagers();
-        List<UserDTO> userDTOList = userList.stream().map(userMapper::convertToDto).collect(Collectors.toList());
+    public void delete(String username) {
+        User user = userRepository.findByUserName(username);
 
-        return userDTOList;
+        if (checkIfUserCanBeDeleted(user)) {
+            user.setIsDeleted(true);
+            user.setUserName(user.getUserName() + "-" + user.getId());
+            userRepository.save(user);
+        }
+
+    }
+
+    private boolean checkIfUserCanBeDeleted(User user) {
+
+        switch (user.getRole().getDescription()) {
+            case "Manager":
+                List<ProjectDTO> projectDTOList = projectService.readAllByAssignedManager(user);
+                return projectDTOList.size() == 0;
+            case "Employee":
+                List<TaskDTO> taskDTOList = taskService.readAllByAssignedEmployee(user);
+                return taskDTOList.size() == 0;
+            default:
+                return true;
+        }
+
     }
 
     @Override
-    public List<UserDTO> findEmployees() {
-        List<User> userList = userRepository.findEmployees();
-        List<UserDTO> userDTOList = userList.stream().map(userMapper::convertToDto).collect(Collectors.toList());
-        return userDTOList;
+    public List<UserDTO> listAllByRole(String role) {
+
+        List<User> users = userRepository.findAllByRoleDescriptionIgnoreCase(role);
+
+        return users.stream().map(userMapper::convertToDTO).collect(Collectors.toList());
     }
 }
