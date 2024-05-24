@@ -39,3 +39,36 @@ Controller -> Service Interface -> ServiceImpl -> Repository + Mappers
         @Column(unique = true)
         private String projectCode;
 
+6. Security
+
+    6.1. add dependencies
+
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-security</artifactId>
+
+        that creates user: user
+        password: Using generated security password from console during boot.
+
+    6.2. add bean in start class for the password encoder
+
+        	@Bean
+        	public PasswordEncoder passwordEncoder(){
+        		return new BCryptPasswordEncoder();
+        	}
+
+    6.3. add SecurityConfig @Configuration class in config package returning UserDetailService to load application users in memory for later authentication.
+
+            @Bean
+            public UserDetailsService userDetailsService(PasswordEncoder encoder){
+                List<UserDetails> userList = new ArrayList<>();
+                //add multiple users
+                userList.add(
+                        new User( "mike", encoder.encode("password"), Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"))));
+                        new User( "ozzy", encoder.encode("password"), Arrays.asList(new SimpleGrantedAuthority("ROLE_MANAGER")));
+                return new InMemoryUserDetailsManager(userList);
+            }
+
+
+            [ UI ] <- [ UserDetailService ]         [ Repository ]  -> [ DB ]
+                            ^
+                      [ UserDetail] <- User
