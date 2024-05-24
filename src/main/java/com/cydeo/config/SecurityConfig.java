@@ -2,12 +2,14 @@ package com.cydeo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,6 +18,7 @@ import java.util.List;
 @Configuration
 public class SecurityConfig {
 
+//bean loads security user list and overrides security default user.
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder encoder){
 
@@ -27,5 +30,35 @@ public class SecurityConfig {
 
 
         return new InMemoryUserDetailsManager(userList);
+    }
+
+    //configure application access based on user role
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+        return http
+                .authorizeRequests()
+                .antMatchers("/user/**").hasRole("ADMIN")
+                .antMatchers("/project/**").hasRole("MANAGER")
+                .antMatchers("/task/**").hasRole("MANAGER")
+                .antMatchers("/task/employee/**").hasRole("EMPLOYEE")
+//                .antMatchers("/task/employee/**").hasAnyRole("EMPLOYEE", "ADMIN")
+//                .antMatchers("task/**").hasAuthority("ROLE_EMPLOYEE")
+                .antMatchers("/", //list path impacted by security rules
+                        "/login",
+                        "/fragments/**",
+                        "/assets/**",
+                        "/images/**")
+                .permitAll() // grant access permit to above http locations
+                .anyRequest().authenticated()
+                .and()
+//                .httpBasic()//type of login screen
+                .formLogin() // use application login screen instead of default login
+                    .loginPage("/login")
+                    .defaultSuccessUrl("/welcome")
+                    .failureUrl("/login?error=true")
+                    .permitAll()
+                .and().build();
+
     }
 }

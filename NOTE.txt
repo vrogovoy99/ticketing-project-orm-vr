@@ -72,3 +72,25 @@ Controller -> Service Interface -> ServiceImpl -> Repository + Mappers
             [ UI ] <- [ UserDetailService ]         [ Repository ]  -> [ DB ]
                             ^
                       [ UserDetail] <- User
+
+    6.4. configure application access based on user role in SecurityConfig class:
+
+             @Bean
+             public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+                 return http
+                         .authorizeRequests()
+                          //alternative ways to assing path to a role
+                         .antMatchers("/task/**").hasRole("EMPLOYEE")
+                         .antMatchers("/task/**").hasAnyRole("EMPLOYEE", "ADMIN")
+                         .antMatchers("task/**").hasAuthority("ROLE_EMPLOYEE")
+                         .antMatchers("/",      //list path impacted by security rules
+                                 "/login",
+                                 "/fragments/**",
+                                 "/assets/**",
+                                 "/images/**")
+                         .permitAll()           // grant access permit to above http locations
+                         .anyRequest().authenticated()
+                         .and()
+                         .httpBasic()           //type of login screen
+                         .and().build();
