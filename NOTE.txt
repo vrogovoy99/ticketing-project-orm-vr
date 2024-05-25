@@ -1,3 +1,10 @@
+3 users are created:
+    admin
+    manager
+    employee
+all have password Abc1
+
+
 1. Sequence of development:
 
 1.1. Controllers are build
@@ -102,3 +109,46 @@ Controller -> Service Interface -> ServiceImpl -> Repository + Mappers
             6.6.1. override findByName method
             6.6.2. get user from the database
             6.6.3. use new UserPrincipal to convert app User to security user and return the object.
+
+    6.7. To logout
+
+        6.7.1. add logout configuration in SecurityConfig.
+        6.7.2. Add <a th:href="@{/logout}" in UI to logout.
+
+    6.7. To control login landing page:
+
+        6.7.1. added AuthSuccessHandler @Configuration class
+        6.7.2. inject AuthSuccessHandler in SecurityConfig
+        6.7.3. in SecurityConfig login section add: .successHandler(authSuccessHandler)
+
+    6.8. Make sure password stored in database is encoded. Use passwordEncoder bean to encode password before saving the user object
+    6.9. Make sure to set enabled true before saving user object.
+
+7. to be able to use security objects add
+
+    7.1. dependency:
+
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity5</artifactId>
+		</dependency>
+
+    7.2. in html template add in head:
+
+         xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    7.3. add security authorization control tag in html (sec:authorize) for the items that are controlled by security authorization:
+
+        <li class="nav-item" sec:authorize="hasAnyAuthority('Admin', 'Manager')">
+
+    7.4. To access security user information use:
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+8. To have access to security entity
+
+    8.1. create entity class BaseEntityListener extends AuditingEntityListener
+
+    8.2. create PrePresist and PreUpdate methods (replica of BaseEntity
+
+    8.3. BaseEntity add @EntityListeners(BaseEntityListener.class)
