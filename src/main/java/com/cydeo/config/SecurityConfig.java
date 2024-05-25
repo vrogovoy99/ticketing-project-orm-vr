@@ -41,12 +41,13 @@ public class SecurityConfig {
 
         return http
                 .authorizeRequests()
-                .antMatchers("/user/**").hasRole("ADMIN")
-                .antMatchers("/project/**").hasRole("MANAGER")
-                .antMatchers("/task/**").hasRole("MANAGER")
-                .antMatchers("/task/employee/**").hasRole("EMPLOYEE")
-//                .antMatchers("/task/employee/**").hasAnyRole("EMPLOYEE", "ADMIN")
-//                .antMatchers("task/**").hasAuthority("ROLE_EMPLOYEE")
+//                .antMatchers("/user/**").hasRole("Admin")
+                .antMatchers("/user/**").hasAuthority("Admin") //hasRole caused a problem since it was not adding ROLE_
+                .antMatchers("/project/**").hasRole("Manager")
+                .antMatchers("/task/**").hasRole("Manager")
+                .antMatchers("/task/employee/**").hasRole("Employee")
+//                .antMatchers("/task/employee/**").hasAnyRole("Employee", "Admin")
+//                .antMatchers("task/**").hasAuthority("ROLE_Employee")
                 .antMatchers("/", //list path impacted by security rules
                         "/login",
                         "/fragments/**",

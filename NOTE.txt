@@ -96,3 +96,9 @@ Controller -> Service Interface -> ServiceImpl -> Repository + Mappers
                          .and().build();
 
     6.5. create class UserPrincipal that implements UserDetails (security user interface) to convert database User object into security User object.
+
+    6.6. add interface SecurityService to extend UserDetailService // add class SecurityServiceImpl:
+
+            6.6.1. override findByName method
+            6.6.2. get user from the database
+            6.6.3. use new UserPrincipal to convert app User to security user and return the object.
