@@ -19,18 +19,21 @@ import java.util.List;
 public class SecurityConfig {
 
 //bean loads security user list and overrides security default user.
-    @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder encoder){
+//    @Bean
+//    public UserDetailsService userDetailsService(PasswordEncoder encoder){
+//
+//        List<UserDetails> userList = new ArrayList<>();
+//
+//        //add multiple users
+//        userList.add(new User( "mike", encoder.encode("password"), Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"))));
+//        userList.add(new User( "ozzy", encoder.encode("password"), Arrays.asList(new SimpleGrantedAuthority("ROLE_MANAGER"))));
+//
+//
+//        return new InMemoryUserDetailsManager(userList);
+//    }
 
-        List<UserDetails> userList = new ArrayList<>();
-
-        //add multiple users
-        userList.add(new User( "mike", encoder.encode("password"), Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"))));
-        userList.add(new User( "ozzy", encoder.encode("password"), Arrays.asList(new SimpleGrantedAuthority("ROLE_MANAGER"))));
 
 
-        return new InMemoryUserDetailsManager(userList);
-    }
 
     //configure application access based on user role
     @Bean

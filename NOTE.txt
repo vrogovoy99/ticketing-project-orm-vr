@@ -69,9 +69,9 @@ Controller -> Service Interface -> ServiceImpl -> Repository + Mappers
             }
 
 
-            [ UI ] <- [ UserDetailService ]         [ Repository ]  -> [ DB ]
-                            ^
-                      [ UserDetail] <- User
+            [ UI ] <- [ UserDetailService ]             [ User ] <- [ Repository ]  -> [ DB ]
+                            ^                              v
+                      [ UserDetail] <- [ User ] <- [ UserPrincipal ]
 
     6.4. configure application access based on user role in SecurityConfig class:
 
@@ -94,3 +94,5 @@ Controller -> Service Interface -> ServiceImpl -> Repository + Mappers
                          .and()
                          .httpBasic()           //type of login screen
                          .and().build();
+
+    6.5. create class UserPrincipal that implements UserDetails (security user interface) to convert database User object into security User object.
