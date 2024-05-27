@@ -75,13 +75,13 @@ public class SecurityConfig {
                 .permitAll()
                 .and()
                 .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login")
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                    .logoutSuccessUrl("/login")
                 .and()
                 .rememberMe()
-                .tokenValiditySeconds(120)
-                .key("cydeo")
-                .userDetailsService(securityService)
+                    .tokenValiditySeconds(120)
+                    .key("cydeo")
+                    .userDetailsService(securityService)
                 .and().build();
 
     }

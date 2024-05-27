@@ -152,3 +152,43 @@ Controller -> Service Interface -> ServiceImpl -> Repository + Mappers
     8.2. create PrePresist and PreUpdate methods (replica of BaseEntity
 
     8.3. BaseEntity add @EntityListeners(BaseEntityListener.class)
+
+9. Add landing points upon successfull login.
+
+    9.1. Create config/AuthSuccessHandler class to define landing points for each authorization
+
+    9.2. in SecurityConfig replace default landing point with AuthSuccessHandler class
+
+                    //.defaultSuccessUrl("/welcome")
+                    .successHandler(authSuccessHandler)
+
+10. Change HTML to control page view based on authorization.
+
+    10.1. In navigation HTML add xmlns:sec="http://www.thymeleaf.org/extras/spring-security" in head tag
+
+    10.2. add sec tag to HTML objects that have to be controlled by security (below span will be visible only to Admin and Manager):
+
+         <span sec:authorize="hasAnyAuthority('Admin', 'Manager')">
+
+11. add logout
+
+    11.1. In SecurityConfig add :
+
+            .logout()
+            .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+            .logoutSuccessUrl("/login")
+
+    11.2. on HTML page add log out link:
+
+        <a th:href="@{/logout}">Logout</a>
+
+12. remember me. In SecurityConfig add :
+
+                .rememberMe()
+                .tokenValiditySeconds(120)
+                .key("cydeo")
+                .userDetailsService(securityService)
+
+13. reroute in case of failed login. In SecurityConfig add:
+
+        .failureUrl("/login?error=true")
